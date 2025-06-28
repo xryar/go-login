@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"database/sql"
-	"log"
 	"login-app/helper"
 	"login-app/model/domain"
 	"login-app/model/web"
@@ -64,10 +63,7 @@ func (service *UsersServiceImpl) Login(ctx context.Context, request web.UserLogi
 	helper.PanicIfError(err)
 
 	token, err := helper.GenerateJWT(user.Id)
-	if err != nil {
-		log.Println("[JWT ERROR]:", err)
-		panic("failed to generate token")
-	}
+	helper.PanicIfError(err)
 
 	return helper.ToUserLoginResponse(token)
 }

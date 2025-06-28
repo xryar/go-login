@@ -34,3 +34,18 @@ func (controller *UsersControllerImpl) Create(w http.ResponseWriter, r *http.Req
 
 	helper.WriteToResponseBody(w, webResponse)
 }
+
+func (controller *UsersControllerImpl) Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	userLoginRequest := web.UserLoginRequest{}
+	helper.ReadFromRequestBody(r, &userLoginRequest)
+	fmt.Printf("DEBUG: %+v\n", userLoginRequest)
+
+	userResponse := controller.UsersService.Login(r.Context(), userLoginRequest)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "SUCCESS",
+		Data:   userResponse,
+	}
+
+	helper.WriteToResponseBody(w, webResponse)
+}

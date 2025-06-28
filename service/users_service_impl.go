@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"log"
 	"login-app/helper"
 	"login-app/model/domain"
 	"login-app/model/web"
@@ -46,4 +47,29 @@ func (service *UsersServiceImpl) Create(ctx context.Context, request web.UserCre
 	user = service.UsersRepository.Create(ctx, tx, user)
 
 	return helper.ToUserResponse(user)
+}
+
+func (service *UsersServiceImpl) Login(ctx context.Context, request web.UserLoginRequest) web.UserLoginResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
+
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	user, err := service.UsersRepository.FindByUsername(ctx, tx, request.Username)
+	helper.PanicIfError(err)
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password))
+	helper.PanicIfError(err)
+
+	token, err := helper.GenerateJWT(user.Id)
+	if err != nil {
+		log.Println("[JWT ERROR]:", err)
+		panic("failed to generate token")
+	}
+
+	return web.UserLoginResponse{
+		Token: token,
+	}
 }

@@ -1,6 +1,7 @@
 package exception
 
 import (
+	"log"
 	"login-app/helper"
 	"login-app/model/web"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 )
 
 func ErrorHandler(w http.ResponseWriter, r *http.Request, err interface{}) {
+	log.Println("[PANIC RECOVERED]:", err)
 	if notFoundError(w, r, err) {
 		return
 	}

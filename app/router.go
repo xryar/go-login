@@ -10,6 +10,7 @@ import (
 func NewRouter(usersController controller.UsersController) *httprouter.Router {
 	router := httprouter.New()
 	router.POST("/api/register", usersController.Create)
+	router.POST("/api/login", usersController.Login)
 
 	router.PanicHandler = exception.ErrorHandler
 

@@ -8,4 +8,5 @@ import (
 
 type UsersRepository interface {
 	Create(ctx context.Context, tx *sql.Tx, user domain.Users) domain.Users
+	FindByUsername(ctx context.Context, tx *sql.Tx, username string) (domain.Users, error)
 }

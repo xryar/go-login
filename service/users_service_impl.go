@@ -69,7 +69,5 @@ func (service *UsersServiceImpl) Login(ctx context.Context, request web.UserLogi
 		panic("failed to generate token")
 	}
 
-	return web.UserLoginResponse{
-		Token: token,
-	}
+	return helper.ToUserLoginResponse(token)
 }

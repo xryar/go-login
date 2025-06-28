@@ -12,3 +12,9 @@ func ToUserResponse(user domain.Users) web.UserResponse {
 		Fullname: user.Fullname,
 	}
 }
+
+func ToUserLoginResponse(token string) web.UserLoginResponse {
+	return web.UserLoginResponse{
+		Token: token,
+	}
+}

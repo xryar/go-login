@@ -18,3 +18,20 @@ func ToUserLoginResponse(token string) web.UserLoginResponse {
 		Token: token,
 	}
 }
+
+func ToAlbumResponse(album domain.Albums) web.AlbumResponse {
+	return web.AlbumResponse{
+		Id:   album.Id,
+		Name: album.Name,
+		Year: album.Year,
+	}
+}
+
+func ToAlbumResponses(albums []domain.Albums) []web.AlbumResponse {
+	var albumResponses []web.AlbumResponse
+	for _, album := range albums {
+		albumResponses = append(albumResponses, ToAlbumResponse(album))
+	}
+
+	return albumResponses
+}

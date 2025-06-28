@@ -41,9 +41,9 @@ func (repository *AlbumsRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, 
 	helper.PanicIfError(err)
 }
 
-func (repository *AlbumsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, albumsId int) (domain.Albums, error) {
+func (repository *AlbumsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, albumId int) (domain.Albums, error) {
 	SQL := "SELECT * FROM albums WHERE id = ?"
-	rows, err := tx.QueryContext(ctx, SQL, albumsId)
+	rows, err := tx.QueryContext(ctx, SQL, albumId)
 	helper.PanicIfError(err)
 	defer rows.Close()
 

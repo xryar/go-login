@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"login-app/app"
 	"login-app/controller"
 	"login-app/helper"
@@ -25,6 +26,7 @@ func main() {
 		Handler: router,
 	}
 
+	fmt.Println("starting web server at http://localhost:3000/")
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
 }

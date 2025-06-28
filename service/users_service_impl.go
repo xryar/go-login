@@ -9,6 +9,7 @@ import (
 	"login-app/repository"
 
 	"github.com/go-playground/validator/v10"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UsersServiceImpl struct {
@@ -29,6 +30,9 @@ func (service *UsersServiceImpl) Create(ctx context.Context, request web.UserCre
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
+	helper.PanicIfError(err)
+
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
@@ -36,7 +40,7 @@ func (service *UsersServiceImpl) Create(ctx context.Context, request web.UserCre
 	user := domain.Users{
 		Username: request.Username,
 		Fullname: request.Fullname,
-		Password: request.Password,
+		Password: string(hashedPassword),
 	}
 
 	user = service.UsersRepository.Create(ctx, tx, user)

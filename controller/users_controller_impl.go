@@ -27,7 +27,7 @@ func (controller *UsersControllerImpl) Create(w http.ResponseWriter, r *http.Req
 
 	userResponse := controller.UsersService.Create(r.Context(), userCreateRequest)
 	webResponse := web.WebResponse{
-		Code:   201,
+		Code:   200,
 		Status: "OK",
 		Data:   userResponse,
 	}

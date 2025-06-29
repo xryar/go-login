@@ -17,9 +17,12 @@ func main() {
 	db := app.NewDB()
 	validate := validator.New()
 	usersRepository := repository.NewUsersRepository()
+	albumsRepository := repository.NewAlbumsRepository()
 	usersService := service.NewUsersService(usersRepository, db, validate)
+	AlbumsService := service.NewAlbumsService(albumsRepository, db, validate)
 	usersController := controller.NewUsersController(usersService)
-	router := app.NewRouter(usersController)
+	albumsController := controller.NewAlbumController(AlbumsService)
+	router := app.NewRouter(usersController, albumsController)
 
 	server := http.Server{
 		Addr:    "localhost:3000",

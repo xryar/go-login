@@ -18,7 +18,7 @@ type AlbumServiceImpl struct {
 	Validate        *validator.Validate
 }
 
-func NewAlbumService(albumRepository repository.AlbumsRepository, DB *sql.DB, validate *validator.Validate) *AlbumServiceImpl {
+func NewAlbumsService(albumRepository repository.AlbumsRepository, DB *sql.DB, validate *validator.Validate) *AlbumServiceImpl {
 	return &AlbumServiceImpl{
 		AlbumRepository: albumRepository,
 		DB:              DB,

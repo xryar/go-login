@@ -3,7 +3,7 @@ package controller
 import (
 	"login-app/helper"
 	"login-app/model/web"
-	"login-app/service"
+	service "login-app/service/users"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"

@@ -1,14 +1,15 @@
 package app
 
 import (
-	"login-app/controller"
+	albumsController "login-app/controller/albums"
+	usersController "login-app/controller/users"
 	"login-app/exception"
 	"login-app/middleware"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-func NewRouter(usersController controller.UsersController, albumsController controller.AlbumsController) *httprouter.Router {
+func NewRouter(usersController usersController.UsersController, albumsController albumsController.AlbumsController) *httprouter.Router {
 	router := httprouter.New()
 	router.POST("/api/register", usersController.Create)
 	router.POST("/api/login", usersController.Login)
@@ -20,7 +21,7 @@ func NewRouter(usersController controller.UsersController, albumsController cont
 	return router
 }
 
-func albumsRouter(router *httprouter.Router, albumsController controller.AlbumsController) {
+func albumsRouter(router *httprouter.Router, albumsController albumsController.AlbumsController) {
 	albumRouter := httprouter.New()
 	albumRouter.POST("/api/albums", albumsController.Create)
 	albumRouter.GET("/api/albums", albumsController.FindAll)

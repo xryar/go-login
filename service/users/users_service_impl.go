@@ -6,7 +6,7 @@ import (
 	"login-app/helper"
 	"login-app/model/domain"
 	"login-app/model/web"
-	"login-app/repository"
+	repository "login-app/repository/users"
 
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"

@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"login-app/app"
-	"login-app/controller"
+	albumsController "login-app/controller/albums"
+	usersController "login-app/controller/users"
 	"login-app/helper"
-	"login-app/repository"
-	"login-app/service"
+	albumsRepository "login-app/repository/albums"
+	usersRepository "login-app/repository/users"
+	albumsService "login-app/service/albums"
+	usersService "login-app/service/users"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -16,12 +19,12 @@ import (
 func main() {
 	db := app.NewDB()
 	validate := validator.New()
-	usersRepository := repository.NewUsersRepository()
-	albumsRepository := repository.NewAlbumsRepository()
-	usersService := service.NewUsersService(usersRepository, db, validate)
-	AlbumsService := service.NewAlbumsService(albumsRepository, db, validate)
-	usersController := controller.NewUsersController(usersService)
-	albumsController := controller.NewAlbumController(AlbumsService)
+	usersRepository := usersRepository.NewUsersRepository()
+	albumsRepository := albumsRepository.NewAlbumsRepository()
+	usersService := usersService.NewUsersService(usersRepository, db, validate)
+	AlbumsService := albumsService.NewAlbumsService(albumsRepository, db, validate)
+	usersController := usersController.NewUsersController(usersService)
+	albumsController := albumsController.NewAlbumController(AlbumsService)
 	router := app.NewRouter(usersController, albumsController)
 
 	server := http.Server{

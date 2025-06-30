@@ -7,7 +7,7 @@ import (
 	"login-app/helper"
 	"login-app/model/domain"
 	"login-app/model/web"
-	"login-app/repository"
+	repository "login-app/repository/albums"
 
 	"github.com/go-playground/validator/v10"
 )

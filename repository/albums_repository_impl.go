@@ -16,8 +16,8 @@ func NewAlbumsRepository() *AlbumsRepositoryImpl {
 }
 
 func (repository *AlbumsRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, albums domain.Albums) domain.Albums {
-	SQL := "INSERT INTO albums(name, year) values (?, ?)"
-	result, err := tx.ExecContext(ctx, SQL, albums.Name, albums.Year)
+	SQL := "INSERT INTO albums(name, year, user_id) values (?, ?, ?)"
+	result, err := tx.ExecContext(ctx, SQL, albums.Name, albums.Year, albums.UserId)
 	helper.PanicIfError(err)
 
 	id, err := result.LastInsertId()
@@ -28,7 +28,7 @@ func (repository *AlbumsRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, al
 }
 
 func (repository *AlbumsRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, albums domain.Albums) domain.Albums {
-	SQL := "UPDATE albums SET name = ? AND year = ? WHERE id = ?"
+	SQL := "UPDATE albums SET name = ?, year = ? WHERE id = ?"
 	_, err := tx.ExecContext(ctx, SQL, albums.Name, albums.Year, albums.Id)
 	helper.PanicIfError(err)
 
@@ -42,7 +42,7 @@ func (repository *AlbumsRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, 
 }
 
 func (repository *AlbumsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, albumId int) (domain.Albums, error) {
-	SQL := "SELECT * FROM albums WHERE id = ?"
+	SQL := "SELECT id, name, year FROM albums WHERE id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, albumId)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -58,7 +58,7 @@ func (repository *AlbumsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx
 }
 
 func (repository *AlbumsRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Albums {
-	SQL := "SELECT * FROM albums"
+	SQL := "SELECT id, name, year FROM albums"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

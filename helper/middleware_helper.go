@@ -11,6 +11,9 @@ func ContextWithUserId(ctx context.Context, userId int) context.Context {
 }
 
 func GetUserIdFromContext(ctx context.Context) int {
-	userId, _ := ctx.Value(userIdKey).(int)
-	return userId
+	userId := ctx.Value(userIdKey)
+	if userId == nil {
+		panic("Id tidak ditemukan")
+	}
+	return userId.(int)
 }

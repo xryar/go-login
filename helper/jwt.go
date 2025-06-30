@@ -36,7 +36,7 @@ func ValidateJWT(tokenString string) (int, error) {
 	}
 
 	claims, ok := token.Claims.(*JWTClaims)
-	if !ok || token.Valid {
+	if !ok || !token.Valid {
 		return 0, errors.New("invalid token")
 	}
 

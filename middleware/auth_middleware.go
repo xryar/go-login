@@ -23,6 +23,7 @@ func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	}
 
 	token := strings.TrimPrefix(authHeader, "Bearer ")
+	token = strings.TrimSpace(token)
 	userId, err := helper.ValidateJWT(token)
 	if err != nil {
 		writeUnAuthorized(w)

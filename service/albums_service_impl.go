@@ -34,9 +34,12 @@ func (service *AlbumServiceImpl) Create(ctx context.Context, request web.AlbumCr
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
+	userId := helper.GetUserIdFromContext(ctx)
+
 	album := domain.Albums{
-		Name: request.Name,
-		Year: request.Year,
+		Name:   request.Name,
+		Year:   request.Year,
+		UserId: userId,
 	}
 
 	album = service.AlbumRepository.Save(ctx, tx, album)

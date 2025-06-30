@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"login-app/model/web"
+	web "login-app/model/web/albums"
 )
 
 type AlbumsService interface {

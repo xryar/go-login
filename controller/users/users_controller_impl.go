@@ -3,6 +3,7 @@ package controller
 import (
 	"login-app/helper"
 	"login-app/model/web"
+	userResponse "login-app/model/web/users"
 	service "login-app/service/users"
 	"net/http"
 
@@ -20,7 +21,7 @@ func NewUsersController(usersService service.UsersService) *UsersControllerImpl 
 }
 
 func (controller *UsersControllerImpl) Create(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	userCreateRequest := web.UserCreateRequest{}
+	userCreateRequest := userResponse.UserCreateRequest{}
 	helper.ReadFromRequestBody(r, &userCreateRequest)
 
 	userResponse := controller.UsersService.Create(r.Context(), userCreateRequest)
@@ -34,7 +35,7 @@ func (controller *UsersControllerImpl) Create(w http.ResponseWriter, r *http.Req
 }
 
 func (controller *UsersControllerImpl) Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	userLoginRequest := web.UserLoginRequest{}
+	userLoginRequest := userResponse.UserLoginRequest{}
 	helper.ReadFromRequestBody(r, &userLoginRequest)
 
 	userResponse := controller.UsersService.Login(r.Context(), userLoginRequest)

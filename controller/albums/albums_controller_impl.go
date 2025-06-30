@@ -3,6 +3,7 @@ package controller
 import (
 	"login-app/helper"
 	"login-app/model/web"
+	albumResponse "login-app/model/web/albums"
 	service "login-app/service/albums"
 	"net/http"
 	"strconv"
@@ -21,7 +22,7 @@ func NewAlbumController(albumService service.AlbumsService) *AlbumControllerImpl
 }
 
 func (controller *AlbumControllerImpl) Create(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	albumCreateRequest := web.AlbumCreateRequest{}
+	albumCreateRequest := albumResponse.AlbumCreateRequest{}
 	helper.ReadFromRequestBody(r, &albumCreateRequest)
 
 	albumResponse := controller.AlbumService.Create(r.Context(), albumCreateRequest)
@@ -35,7 +36,7 @@ func (controller *AlbumControllerImpl) Create(w http.ResponseWriter, r *http.Req
 }
 
 func (controller *AlbumControllerImpl) Update(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	albumUpdateRequest := web.AlbumUpdateRequest{}
+	albumUpdateRequest := albumResponse.AlbumUpdateRequest{}
 	helper.ReadFromRequestBody(r, &albumUpdateRequest)
 
 	albumId := p.ByName("albumId")

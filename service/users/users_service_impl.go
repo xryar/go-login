@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"login-app/helper"
 	"login-app/model/domain"
-	"login-app/model/web"
+	web "login-app/model/web/users"
 	repository "login-app/repository/users"
 
 	"github.com/go-playground/validator/v10"

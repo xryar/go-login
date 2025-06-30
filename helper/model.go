@@ -2,33 +2,34 @@ package helper
 
 import (
 	"login-app/model/domain"
-	"login-app/model/web"
+	albumResponse "login-app/model/web/albums"
+	userResponse "login-app/model/web/users"
 )
 
-func ToUserResponse(user domain.Users) web.UserResponse {
-	return web.UserResponse{
+func ToUserResponse(user domain.Users) userResponse.UserResponse {
+	return userResponse.UserResponse{
 		Id:       user.Id,
 		Username: user.Username,
 		Fullname: user.Fullname,
 	}
 }
 
-func ToUserLoginResponse(token string) web.UserLoginResponse {
-	return web.UserLoginResponse{
+func ToUserLoginResponse(token string) userResponse.UserLoginResponse {
+	return userResponse.UserLoginResponse{
 		Token: token,
 	}
 }
 
-func ToAlbumResponse(album domain.Albums) web.AlbumResponse {
-	return web.AlbumResponse{
+func ToAlbumResponse(album domain.Albums) albumResponse.AlbumResponse {
+	return albumResponse.AlbumResponse{
 		Id:   album.Id,
 		Name: album.Name,
 		Year: album.Year,
 	}
 }
 
-func ToAlbumResponses(albums []domain.Albums) []web.AlbumResponse {
-	var albumResponses []web.AlbumResponse
+func ToAlbumResponses(albums []domain.Albums) []albumResponse.AlbumResponse {
+	var albumResponses []albumResponse.AlbumResponse
 	for _, album := range albums {
 		albumResponses = append(albumResponses, ToAlbumResponse(album))
 	}

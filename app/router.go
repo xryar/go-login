@@ -13,6 +13,14 @@ func NewRouter(usersController controller.UsersController, albumsController cont
 	router.POST("/api/register", usersController.Create)
 	router.POST("/api/login", usersController.Login)
 
+	albumsRouter(router, albumsController)
+
+	router.PanicHandler = exception.ErrorHandler
+
+	return router
+}
+
+func albumsRouter(router *httprouter.Router, albumsController controller.AlbumsController) {
 	albumRouter := httprouter.New()
 	albumRouter.POST("/api/albums", albumsController.Create)
 	albumRouter.GET("/api/albums", albumsController.FindAll)
@@ -26,8 +34,4 @@ func NewRouter(usersController controller.UsersController, albumsController cont
 	router.Handler("GET", "/api/albums/:albumId", protectedHandler)
 	router.Handler("PUT", "/api/albums/:albumId", protectedHandler)
 	router.Handler("DELETE", "/api/albums/:albumId", protectedHandler)
-
-	router.PanicHandler = exception.ErrorHandler
-
-	return router
 }

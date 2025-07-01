@@ -8,4 +8,5 @@ type Songs struct {
 	Performer string
 	Duration  int
 	AlbumId   int
+	UserId    int
 }

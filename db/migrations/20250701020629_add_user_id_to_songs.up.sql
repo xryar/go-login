@@ -1,0 +1,5 @@
+ALTER TABLE songs ADD COLUMN user_id INT NOT NULL;
+
+ALTER TABLE songs ADD CONSTRAINT fk_user_songs
+FOREIGN KEY (user_id) REFERENCES users(id)
+ON DELETE CASCADE;

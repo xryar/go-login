@@ -3,6 +3,8 @@ package songs
 import (
 	"context"
 	"database/sql"
+	"login-app/helper"
+	"login-app/model/domain"
 	"login-app/model/web/songs"
 	repository "login-app/repository/songs"
 
@@ -24,7 +26,28 @@ func NewSongsService(songsRepository repository.SongsRepository, DB *sql.DB, val
 }
 
 func (service *SongsServiceImpl) Create(ctx context.Context, request songs.SongCreateRequest) songs.SongResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
 
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	userId := helper.GetUserIdFromContext(ctx)
+
+	song := domain.Songs{
+		Title:     request.Title,
+		Year:      request.Year,
+		Genre:     request.Genre,
+		Performer: request.Performer,
+		Duration:  request.Duration,
+		AlbumId:   request.AlbumId,
+		UserId:    userId,
+	}
+
+	song = service.SongsRepository.Save(ctx, tx, song)
+
+	return helper.ToSongResponse(song)
 }
 
 func (service *SongsServiceImpl) Update(ctx context.Context, request songs.SongUpdateRequest) songs.SongResponse {

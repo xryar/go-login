@@ -3,6 +3,7 @@ package helper
 import (
 	"login-app/model/domain"
 	albumResponse "login-app/model/web/albums"
+	"login-app/model/web/songs"
 	userResponse "login-app/model/web/users"
 )
 
@@ -35,4 +36,16 @@ func ToAlbumResponses(albums []domain.Albums) []albumResponse.AlbumResponse {
 	}
 
 	return albumResponses
+}
+
+func ToSongResponse(song domain.Songs) songs.SongResponse {
+	return songs.SongResponse{
+		Id:        song.Id,
+		Title:     song.Title,
+		Year:      song.Year,
+		Genre:     song.Genre,
+		Performer: song.Performer,
+		Duration:  song.Duration,
+		AlbumId:   song.AlbumId,
+	}
 }

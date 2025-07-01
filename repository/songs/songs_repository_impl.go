@@ -16,7 +16,7 @@ func NewSongsRepository() *SongsRepositoryImpl {
 }
 
 func (repository *SongsRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, songs domain.Songs) domain.Songs {
-	SQL := "INSERT INTO songs VALUES (?, ?, ?, ?, ?, ?, ?)"
+	SQL := "INSERT INTO songs(title, year, genre, performer, duration, album_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
 	result, err := tx.ExecContext(ctx, SQL, songs.Title, songs.Year, songs.Genre, songs.Performer, songs.Duration, songs.AlbumId, songs.UserId)
 	helper.PanicIfError(err)
 
@@ -42,7 +42,7 @@ func (repository *SongsRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, s
 }
 
 func (repository *SongsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, songId int) (domain.Songs, error) {
-	SQL := "SELECT * FROM songs WHERE id = ?"
+	SQL := "SELECT id, title, year, genre, performer, duration, album_id FROM songs WHERE id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, songId)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -58,7 +58,7 @@ func (repository *SongsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx,
 }
 
 func (repository *SongsRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Songs {
-	SQL := "SELECT * FROM songs"
+	SQL := "SELECT id, title, year, genre, performer, duration, album_id FROM songs"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

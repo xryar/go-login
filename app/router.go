@@ -50,8 +50,8 @@ func songsRouter(router *httprouter.Router, songsController songsController.Song
 	protectedHandler := middleware.NewAuthMiddleware(songRouter)
 	router.Handler("POST", "/api/songs", protectedHandler)
 	router.Handler("GET", "/api/songs", protectedHandler)
-	router.Handler("GET", "/api//:songId", protectedHandler)
-	router.Handler("PUT", "/api//:songId", protectedHandler)
-	router.Handler("DELETE", "/api//:songId", protectedHandler)
+	router.Handler("GET", "/api/songs/:songId", protectedHandler)
+	router.Handler("PUT", "/api/songs/:songId", protectedHandler)
+	router.Handler("DELETE", "/api/songs/:songId", protectedHandler)
 
 }

@@ -3,6 +3,7 @@ package songs
 import (
 	"context"
 	"database/sql"
+	"login-app/exception"
 	"login-app/helper"
 	"login-app/model/domain"
 	"login-app/model/web/songs"
@@ -51,17 +52,63 @@ func (service *SongsServiceImpl) Create(ctx context.Context, request songs.SongC
 }
 
 func (service *SongsServiceImpl) Update(ctx context.Context, request songs.SongUpdateRequest) songs.SongResponse {
+	err := service.Validate.Struct(request)
+	helper.PanicIfError(err)
 
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	song, err := service.SongsRepository.FindById(ctx, tx, request.Id)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	song.Title = request.Title
+	song.Year = request.Year
+	song.Genre = request.Genre
+	song.Performer = request.Performer
+	song.Duration = request.Duration
+	song.AlbumId = request.AlbumId
+
+	song = service.SongsRepository.Update(ctx, tx, song)
+
+	return helper.ToSongResponse(song)
 }
 
 func (service *SongsServiceImpl) Delete(ctx context.Context, songId int) {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	song, err := service.SongsRepository.FindById(ctx, tx, songId)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	service.SongsRepository.Delete(ctx, tx, song)
 
 }
 
 func (service *SongsServiceImpl) FindById(ctx context.Context, songId int) songs.SongResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
 
+	song, err := service.SongsRepository.FindById(ctx, tx, songId)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	return helper.ToSongResponse(song)
 }
 
 func (service *SongsServiceImpl) FindAll(ctx context.Context) []songs.SongResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
 
+	songs := service.SongsRepository.FindAll(ctx, tx)
+
+	return helper.ToSongResponses(songs)
 }

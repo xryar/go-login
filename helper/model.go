@@ -3,7 +3,7 @@ package helper
 import (
 	"login-app/model/domain"
 	albumResponse "login-app/model/web/albums"
-	"login-app/model/web/songs"
+	songResponse "login-app/model/web/songs"
 	userResponse "login-app/model/web/users"
 )
 
@@ -38,8 +38,8 @@ func ToAlbumResponses(albums []domain.Albums) []albumResponse.AlbumResponse {
 	return albumResponses
 }
 
-func ToSongResponse(song domain.Songs) songs.SongResponse {
-	return songs.SongResponse{
+func ToSongResponse(song domain.Songs) songResponse.SongResponse {
+	return songResponse.SongResponse{
 		Id:        song.Id,
 		Title:     song.Title,
 		Year:      song.Year,
@@ -48,4 +48,13 @@ func ToSongResponse(song domain.Songs) songs.SongResponse {
 		Duration:  song.Duration,
 		AlbumId:   song.AlbumId,
 	}
+}
+
+func ToSongResponses(songs []domain.Songs) []songResponse.SongResponse {
+	var songResponses []songResponse.SongResponse
+	for _, song := range songs {
+		songResponses = append(songResponses, ToSongResponse(song))
+	}
+
+	return songResponses
 }

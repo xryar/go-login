@@ -26,7 +26,7 @@ func main() {
 	albumsRepository := albumsRepository.NewAlbumsRepository()
 	songsRepository := songsRepository.NewSongsRepository()
 	usersService := usersService.NewUsersService(usersRepository, db, validate)
-	albumsService := albumsService.NewAlbumsService(albumsRepository, db, validate)
+	albumsService := albumsService.NewAlbumsService(albumsRepository, songsRepository, db, validate)
 	songsService := songsService.NewSongsService(songsRepository, db, validate)
 	usersController := usersController.NewUsersController(usersService)
 	albumsController := albumsController.NewAlbumController(albumsService)

@@ -57,6 +57,23 @@ func (repository *SongsRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx,
 	}
 }
 
+func (repository *SongsRepositoryImpl) FindByAlbumId(ctx context.Context, tx *sql.Tx, albumId int) []domain.Songs {
+	SQL := "SELECT id, title, performer FROM songs WHERE album_id = ?"
+	rows, err := tx.QueryContext(ctx, SQL, albumId)
+	helper.PanicIfError(err)
+	defer rows.Close()
+
+	var songs []domain.Songs
+	for rows.Next() {
+		song := domain.Songs{}
+		err := rows.Scan(&song.Id, &song.Title, &song.Performer)
+		helper.PanicIfError(err)
+		songs = append(songs, song)
+	}
+
+	return songs
+}
+
 func (repository *SongsRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Songs {
 	SQL := "SELECT id, title, year, genre, performer, duration, album_id FROM songs"
 	rows, err := tx.QueryContext(ctx, SQL)

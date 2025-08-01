@@ -96,21 +96,7 @@ func (service *AlbumServiceImpl) FindById(ctx context.Context, albumId int) web.
 
 	songs := service.SongRepository.FindByAlbumId(ctx, tx, albumId)
 
-	var songResponses []web.SongInAlbumResponse
-	for _, song := range songs {
-		songResponses = append(songResponses, web.SongInAlbumResponse{
-			Id:        song.Id,
-			Title:     song.Title,
-			Performer: song.Performer,
-		})
-	}
-
-	return web.AlbumWithSongResponse{
-		Id:    album.Id,
-		Name:  album.Name,
-		Year:  album.Year,
-		Songs: songResponses,
-	}
+	return helper.ToAlbumWithSongResponse(album, songs)
 }
 
 func (service *AlbumServiceImpl) FindAll(ctx context.Context) []web.AlbumResponse {

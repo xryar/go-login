@@ -38,6 +38,24 @@ func ToAlbumResponses(albums []domain.Albums) []albumResponse.AlbumResponse {
 	return albumResponses
 }
 
+func ToAlbumWithSongResponse(album domain.Albums, songs []domain.Songs) albumResponse.AlbumWithSongResponse {
+	var songResponses []albumResponse.SongInAlbumResponse
+	for _, song := range songs {
+		songResponses = append(songResponses, albumResponse.SongInAlbumResponse{
+			Id:        song.Id,
+			Title:     song.Title,
+			Performer: song.Performer,
+		})
+	}
+
+	return albumResponse.AlbumWithSongResponse{
+		Id:    album.Id,
+		Name:  album.Name,
+		Year:  album.Year,
+		Songs: songResponses,
+	}
+}
+
 func ToSongResponse(song domain.Songs) songResponse.SongResponse {
 	return songResponse.SongResponse{
 		Id:        song.Id,
